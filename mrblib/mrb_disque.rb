@@ -7,17 +7,17 @@ class Disque
   # ADDJOB queue_name job <ms-timeout> [REPLICATE <count>] [DELAY <sec>] [RETRY <sec>] [TTL <sec>] [MAXLEN <count>] [ASYNC]
   def addjob *args
     @obj.queue :addjob, *args
-    @obj.reply
+    @obj.reply.to_s
   end
   def getjob *queue_names
     @obj.queue :getjob, "from", *queue_names
-    @obj.reply
+    Reply.new @obj.reply
   end
 
   # GETJOB [NOHANG] [TIMEOUT <ms-timeout>] [COUNT <count>] [WITHCOUNTERS] FROM queue1 queue2 ... queueN
   def getjob_with_opts *args
     @obj.queue :getjob, *args
-    @obj.reply
+    Reply.new @obj.reply
   end
 
   # DELJOB <job-id> ... <job-id>
@@ -31,5 +31,14 @@ class Disque
   def run_command api_name, *args
     @obj.queue api_name.to_sym, *args
     @obj.reply
+  end
+
+  class Reply
+    attr_reader :queue_name, :job_id, :job_name
+    def initialize reply
+      @queue_name = reply[0][0]
+      @job_id = reply[0][1]
+      @job_name = reply[0][2]
+    end
   end
 end
