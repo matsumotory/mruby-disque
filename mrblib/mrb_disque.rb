@@ -5,6 +5,8 @@ class Disque
   end
 
   # ADDJOB queue_name job <ms-timeout> [REPLICATE <count>] [DELAY <sec>] [RETRY <sec>] [TTL <sec>] [MAXLEN <count>] [ASYNC]
+  # is the following
+  # addjob "queue_name", "job", "5", "REPLICATE", "3", "DELAY", "2", "RETRY", "5", "TTL", "10", "MAXLEN", "4", "ASYNC"
   def addjob *args
     @obj.queue :addjob, *args
     @obj.reply.to_s
@@ -15,14 +17,16 @@ class Disque
   end
 
   # GETJOB [NOHANG] [TIMEOUT <ms-timeout>] [COUNT <count>] [WITHCOUNTERS] FROM queue1 queue2 ... queueN
+  # is the following
+  # getjob_with_opts "NOHANG", "TIMEOUT", "10", "COUNT", "5", "WITHCOUNTERS", "FROM", "queue1", "queue2", "queueN"
   def getjob_with_opts *args
     @obj.queue :getjob, *args
     Reply.new @obj.reply
   end
 
   # DELJOB <job-id> ... <job-id>
-  def deljob *args
-    @obj.queue :deljob, *args
+  def deljob *job_ids
+    @obj.queue :deljob, *job_ids
     @obj.reply
   end
 
