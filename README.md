@@ -13,6 +13,9 @@ MRuby::Build.new do |conf|
 end
 ```
 ## example
+
+Install [Disque](https://github.com/antirez/disque) and start `./disque/src/disque-server`
+
 ```ruby
 assert("Disque#addjob") do
   d = Disque.new
