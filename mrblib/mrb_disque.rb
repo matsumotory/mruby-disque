@@ -13,7 +13,7 @@ class Disque
   end
   def getjob *queue_names
     @obj.queue :getjob, "from", *queue_names
-    Reply.new @obj.reply
+    GetJobReply.new @obj.reply
   end
 
   # GETJOB [NOHANG] [TIMEOUT <ms-timeout>] [COUNT <count>] [WITHCOUNTERS] FROM queue1 queue2 ... queueN
@@ -21,7 +21,7 @@ class Disque
   # getjob_with_opts "NOHANG", "TIMEOUT", "10", "COUNT", "5", "WITHCOUNTERS", "FROM", "queue1", "queue2", "queueN"
   def getjob_with_opts *args
     @obj.queue :getjob, *args
-    Reply.new @obj.reply
+    GetJobReply.new @obj.reply
   end
 
   # DELJOB <job-id> ... <job-id>
@@ -37,7 +37,7 @@ class Disque
     @obj.reply
   end
 
-  class Reply
+  class GetJobReply
     attr_reader :queue_name, :job_id, :job_name
     def initialize reply
       @queue_name = reply[0][0]
