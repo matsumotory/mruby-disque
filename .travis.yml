@@ -8,6 +8,9 @@ install:
   - sudo apt-get -qq install rake bison git gperf
 before_script:
   - git clone --depth=1 https://github.com/antirez/disque.git
-  - cd disque && make && ./src/disque-server & && cd ..
+  - cd disque
+  - make
+  - ./src/disque-server &
+  - cd ..
 script:
   - rake
