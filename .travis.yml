@@ -1,4 +1,6 @@
 language: c
+services:
+  - redis-server
 compiler:
   - gcc
   - clang
