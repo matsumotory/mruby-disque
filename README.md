@@ -19,15 +19,15 @@ Install [Disque](https://github.com/antirez/disque) and start `./disque/src/disq
 ```ruby
 assert("Disque#addjob") do
   d = Disque.new
-  job_id = d.addjob "q1", "box", "0"
+  job_id = d.addjob "q1", "box"
   assert_not_equal(nil, job_id)
   d.deljob job_id
 end
 
 assert("Disque#getjob") do
   d = Disque.new
-  d.addjob "q1", "box", "0"
-  d.addjob "q1", "cat", "0"
+  d.addjob "q1", "box"
+  d.addjob "q1", "cat"
   job1 = d.getjob "q1"
   job2 = d.getjob "q1"
   assert_equal("box", job1.job_name)
@@ -37,7 +37,7 @@ end
 
 assert("Disque#run_command") do
   d = Disque.new
-  job_id = d.addjob "q1", "box", "0"
+  job_id = d.addjob "q1", "box"
   qlen = d.run_command :qlen, "q1"
   assert_equal(1, qlen)
   d.deljob job_id
