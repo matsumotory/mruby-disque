@@ -4,13 +4,19 @@ class Disque
     self
   end
 
+  def addjob queue_name, job, ms_timeout=0
+    @obj.queue :addjob, queue_name, job, ms_timeout.to_s
+    @obj.reply.to_s
+  end
+
   # ADDJOB queue_name job <ms-timeout> [REPLICATE <count>] [DELAY <sec>] [RETRY <sec>] [TTL <sec>] [MAXLEN <count>] [ASYNC]
   # is the following
-  # addjob "queue_name", "job", "5", "REPLICATE", "3", "DELAY", "2", "RETRY", "5", "TTL", "10", "MAXLEN", "4", "ASYNC"
-  def addjob *args
+  # addjob_with_opts "queue_name", "job", "5", "REPLICATE", "3", "DELAY", "2", "RETRY", "5", "TTL", "10", "MAXLEN", "4", "ASYNC"
+  def addjob_with_opts *args
     @obj.queue :addjob, *args
     @obj.reply.to_s
   end
+
   def getjob *queue_names
     @obj.queue :getjob, "from", *queue_names
     GetJobReply.new @obj.reply

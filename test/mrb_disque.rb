@@ -4,7 +4,14 @@
 
 assert("Disque#addjob") do
   d = Disque.new
-  job_id = d.addjob "q1", "box", "0"
+  job_id = d.addjob "q1", "box"
+  assert_not_equal(nil, job_id)
+  d.deljob job_id
+end
+
+assert("Disque#addjob_with_opts") do
+  d = Disque.new
+  job_id = d.addjob_with_opts "q1", "box", "0"
   assert_not_equal(nil, job_id)
   d.deljob job_id
 end
